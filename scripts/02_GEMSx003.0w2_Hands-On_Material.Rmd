@@ -8,7 +8,7 @@ editor_options:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 ```
 
 ```{r gems_logo, fig.align="center", out.width = '100%', echo = F}
@@ -72,7 +72,7 @@ library(tmap)
 
 ### Data
 
-Your exercises will draw on three vector datasets from the Minnesota Geospatial Commons, which have been downloaded, cleaned, transformed and saved in the directory `./data/MN` for this workshop.
+Your exercises will draw on three vector data sets from the Minnesota Geospatial Commons, which have been downloaded, cleaned, transformed and saved in the directory `../data/MN` for this workshop.
 
 1.  [POINT] Minnesota Six-Inch Soil Temperature: <https://gisdata.mn.gov/dataset/geos-soil-temp-network>
 2.  [LINES] Stream Routes - Major River Centerlines: <https://gisdata.mn.gov/dataset/water-major-river-centerlines>
@@ -163,7 +163,7 @@ tmap_arrange(p_cntr1, p_cntr2, ncol = 1)
 
 ### Vector Attribute Manipulation: Aggregation
 
-Aggregation operations summarize datasets by a 'grouping variable', typically an attribute column
+Aggregation operations summarize data sets by a 'grouping variable', typically an attribute column
 
 The following code chunk calculates the number of people per continent based on country-level data (one row per country):
 
@@ -221,25 +221,25 @@ sf2 <- merge(sf1, dat1, by = "var") sf2 <- merge(sf1, dat1, by.x = "var1", by.y 
 
 Types of merges
 
--   Inner join preserves matching features from both datasets
+-   Inner join preserves matching features from both data sets
 
 ```
 sf2 <- merge(sf1, dat1, by.x = "var1", by.y = "var2", all = F)
 ```
 
--   Left (outer) join preserves features from the first dataset
+-   Left (outer) join preserves features from the first data set
 
 ```
 sf2 <- merge(sf1, dat1, by.x = "var1", by.y = "var2", all.x = T)
 ```
 
--   Right (outer) join preserves features from the second dataset
+-   Right (outer) join preserves features from the second data set
 
 ```
 sf2 <- merge(sf1, dat1, by.x = "var1", by.y = "var2", all.y = T)
 ```
 
--   Outer join preserves all features from both datasets
+-   Outer join preserves all features from both data sets
 
 ```
 sf2 <- merge(sf1, dat1, by.x = "var1", by.y = "var2", all = T)
@@ -248,7 +248,7 @@ sf2 <- merge(sf1, dat1, by.x = "var1", by.y = "var2", all = T)
 ### Exercise 1: Attribute Data Operations {#Ex1}
 
 > *Data Source:*\
-> Groundwater Provinces shapefile found at `./data/MN/gw_prov/gw_provinces_extra.shp`
+> Groundwater Provinces shapefile found at `../data/MN/gw_prov/gw_provinces_extra.shp`
 
 For today's workshop, the data has been downloaded, cleaned, transformed, and saved in the directory `../data/MN`.
 
@@ -271,7 +271,7 @@ gw_prov_df <- data.frame(provID = as.character(c(seq(1:5),7)),
 
 Add variables from `gw_prov_df` to `gw_prov`, and create a new object called `gw_prov_stats`.
 What function did you use and why?
-Which variable is key in both datasets?
+Which variable is key in both data sets?
 How many observations are in your new object?
 
 ```{r ex1.2}
@@ -540,11 +540,11 @@ tmap_arrange(p1, p2)
 
 > *Data Sources:*
 >
-> -   Groundwater Provinces shapefile found at `.data/gw_prov/gw_provinces_extra.shp`
+> -   Groundwater Provinces shapefile found at `..data/MN/gw_prov/gw_provinces_extra.shp`
 >
-> -   Minnesota rivers shapefile found at `.data/stream_routes/mn_rivers.shp`
+> -   Minnesota rivers shapefile found at `..data/MN/stream_routes/mn_rivers.shp`
 >
-> -   Soil temp stations shapefile found at `.data/soil_temp/soil_temp.shp`
+> -   Soil temp stations shapefile found at `..data/MN/soil_temp/soil_temp.shp`
 
 For today's workshop, the data has been downloaded, cleaned, transformed, and saved in the directory `../data/MN`.
 
@@ -704,9 +704,9 @@ tmap_arrange(p_pop1, p_pop2, ncol = 1)
 
 > *Data Source:*
 >
-> -   Groundwater Provinces shapefile found at `.data/gw_prov/gw_provinces_extra.shp`
+> -   Groundwater Provinces shapefile found at `..data/MN/gw_prov/gw_provinces_extra.shp`
 >
-> -   Minnesota rivers shapefile found at `.data/stream_routes/mn_rivers.shp`
+> -   Minnesota rivers shapefile found at `..data/MN/stream_routes/mn_rivers.shp`
 
 For today's workshop, the data has been downloaded, cleaned, transformed, and saved in the directory `../data/MN`.
 
