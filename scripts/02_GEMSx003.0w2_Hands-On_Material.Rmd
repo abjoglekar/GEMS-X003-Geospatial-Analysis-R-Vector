@@ -185,6 +185,20 @@ p_pop2 = tm_shape(world_agg) +
 tmap_arrange(p_pop1, p_pop2, ncol = 1)
 ```
 
+For those of you familiar with the `dplyr` package, you can also use the `group_by()`
+and `summarize()` functions to aggregate variable(s) of interest across groupings.
+
+```{r dplyr_agg}
+library(dplyr)
+world_agg2 = world |>
+  group_by(continent) |>
+  summarize(pop = sum(pop, na.rm = TRUE), area = sum(area_km2))
+world_agg2
+```
+
+This approach has more flexibility, readability, and control over the new column names, 
+but does require learning the `tidyverse` syntax. 
+
 ### Vector Attribute Manipulation: Merge
 
 Merge, or join, operations combine data from different sources based on a shared 'key' variable
@@ -192,8 +206,8 @@ Merge, or join, operations combine data from different sources based on a shared
 The following code chunk takes an `sf` object (`world`) as the first argument and adds columns to it from a separate `data.frame` (`coffee_data`) specified as the second argument):
 
 ```{r coffee}
-head(world)
-head(coffee_data)
+world
+str(coffee_data)
 ```
 
 ```{r attr_mrg}
@@ -205,7 +219,8 @@ world_coffee
 tm_shape(world) + tm_polygons(col = "white") +
   tm_shape(world_coffee) +
   tm_polygons(col = "coffee_production_2017", title = "1,000 60kg bags", style = "jenks") +
-  tm_layout(main.title = "2017 Coffee Production", main.title.size = 1,
+  tm_credits("Source: International Coffee Organization.") +
+  tm_layout(main.title = "World coffee production (thousand 60-kg bags) by country, 2017", main.title.size = 1,
             bg.color = "lightblue")
 ```
 
@@ -216,7 +231,8 @@ In the majority of cases where variable names are not the same, you have two opt
 2.  Use the `by` argument to specify the joining variables
 
 ```
-sf2 <- merge(sf1, dat1, by = "var") sf2 <- merge(sf1, dat1, by.x = "var1", by.y = "var2")
+sf2 <- merge(sf1, dat1, by = "var") 
+sf2 <- merge(sf1, dat1, by.x = "var1", by.y = "var2")
 ```
 
 Types of merges
@@ -224,26 +240,49 @@ Types of merges
 -   Inner join preserves matching features from both data sets
 
 ```
-sf2 <- merge(sf1, dat1, by.x = "var1", by.y = "var2", all = F)
+sf2 <- merge(sf1, dat1, by.x = "var1", by.y = "var2", all = FALSE)
 ```
 
 -   Left (outer) join preserves features from the first data set
 
 ```
-sf2 <- merge(sf1, dat1, by.x = "var1", by.y = "var2", all.x = T)
+sf2 <- merge(sf1, dat1, by.x = "var1", by.y = "var2", all.x = TRUE)
 ```
 
--   Right (outer) join preserves features from the second data set
+-   Right (outer) join preserves features from the second data set [not generally applicable for spatial data]
 
 ```
-sf2 <- merge(sf1, dat1, by.x = "var1", by.y = "var2", all.y = T)
+sf2 <- merge(sf1, dat1, by.x = "var1", by.y = "var2", all.y = TRUE)
 ```
 
--   Outer join preserves all features from both data sets
+-   Outer join preserves all features from both data sets [not generally applicable for spatial data]
 
 ```
-sf2 <- merge(sf1, dat1, by.x = "var1", by.y = "var2", all = T)
+sf2 <- merge(sf1, dat1, by.x = "var1", by.y = "var2", all = TRUE)
 ```
+
+By default, `merge()` performs an inner join: `merge(x, y, by, all = FALSE)`. 
+
+```{r attr_mrg2}
+world_coffeeI = merge(world, coffee_data, by = "name_long")
+nrow(world_coffeeI)
+```
+
+But there were 47 observations in our `world_coffee` dataset! We can identify the rows that did not match using the `setdiff()` function as follows:
+```{r setdiff}
+setdiff(coffee_data$name_long, world$name_long)
+```
+
+The result shows that `name_long` equaling `Congo, Dem. Rep. of` or `Others` is not present in the world dataset. Often country names are abbreviated and easily missed. You can reclassify the DRC name in (either) dataset and remerge. Identifying the spelling of the DRC country name in the world dataset can either be done manually or via a regular expression. 
+
+```{r regex}
+grep("Dem*.+Congo", world$name_long, value = TRUE)
+```
+**Note:** The object order matters when merging `sf` and `data.frame` objects. 
+
+- If you list the `sf` object first, the result will be an `sf` object.
+
+- If you list the `data.frame` object first, the result will be a `data.frame` object. 
 
 ### Exercise 1: Attribute Data Operations {#Ex1}
 
