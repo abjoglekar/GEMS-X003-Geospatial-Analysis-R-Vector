@@ -44,7 +44,7 @@ Yuan Chai, University of Minnesota ([chaix026\@umn.edu](mailto:chaix026@umn.edu)
 
 ## Setup
 
-### Load R Libraries
+### Load R Packages
 
 ```{r libraries}
 packages_to_load <- c("sf", "terra", "tmap", "spData")
@@ -579,11 +579,11 @@ tmap_arrange(p1, p2)
 
 > *Data Sources:*
 >
-> -   Groundwater Provinces shapefile found at `..data/MN/gw_prov/gw_provinces_extra.shp`
+> -   Groundwater Provinces shapefile found at `../data/MN/gw_prov/gw_provinces_extra.shp`
 >
-> -   Minnesota rivers shapefile found at `..data/MN/stream_routes/mn_rivers.shp`
+> -   Minnesota rivers shapefile found at `../data/MN/stream_routes/mn_rivers.shp`
 >
-> -   Soil temp stations shapefile found at `..data/MN/soil_temp/soil_temp.shp`
+> -   Soil temp stations shapefile found at `../data/MN/soil_temp/soil_temp.shp`
 
 For today's workshop, the data has been downloaded, cleaned, transformed, and saved in the directory `../data/MN`.
 
@@ -743,9 +743,9 @@ tmap_arrange(p_pop1, p_pop2, ncol = 1)
 
 > *Data Source:*
 >
-> -   Groundwater Provinces shapefile found at `..data/MN/gw_prov/gw_provinces_extra.shp`
+> -   Groundwater Provinces shapefile found at `../data/MN/gw_prov/gw_provinces_extra.shp`
 >
-> -   Minnesota rivers shapefile found at `..data/MN/stream_routes/mn_rivers.shp`
+> -   Minnesota rivers shapefile found at `../data/MN/stream_routes/mn_rivers.shp`
 
 For today's workshop, the data has been downloaded, cleaned, transformed, and saved in the directory `../data/MN`.
 
@@ -767,7 +767,7 @@ For today's workshop, the data has been downloaded, cleaned, transformed, and sa
 
     ------------------------------------------------------------------------
 
-3.  Find and plot the segments of the Mississippi river that run through groundwater province 5
+3.  Find and plot the segments of the Mississippi river that run through groundwater province 1
 
     ```{r ex3.3}
     # Use this code block to work through the exercise
