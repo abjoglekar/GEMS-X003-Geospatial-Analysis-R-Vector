@@ -1,4 +1,4 @@
-<img src="images/GEMS Informatics Learning.png" width=600 alt="GEMS Learning Logo" title="GEMS Learning" />
+img src="images/GEMS Informatics Learning.png" width=600 alt="GEMS Learning Logo" title="GEMS Learning" />
 
 # X003.0 An Introduction to Spatial Data Analysis in R
 
@@ -8,53 +8,64 @@ This course is designed for those who are interested in explicitly accounting fo
 - Week 2: Basic geocomputation with vector data in R
 - Week 3: Basic geocomputation with raster data in R 
 
-The course will be delivered via R Markdown files hosted on the GEMS Informatics Platform. You do not need to have R or RStudio installed on your machine to participate.
-
 ## Prerequisites: 
 - Access to the internet
-- A [GEMS Platform](https://gems.agroinformatics.org/webui/#) user account
 - Introductory knowledge of R & RStudio  
 
 ## Initial Setup
-1. Login to GEMS Platform at https://gems.agroinformatics.org/
-    - GEMS Platform uses Globus to authenticate your account, so if your institution is already linked to Globus (for example, University of Minnesota and many other universities), you can search and select your institution from the list and use your institutional account to log into GEMS Platform. Alternatively, you can log in using Google or ORCID iD, or create  your own Globus account to log in.   
-    
-2. Once logged in, click `Analyze > RStudio` from the homepage (top right corner). If you do not have an `Analyze` option next to `Data Products` and `My Workspace` please let your TA know immediately. They will need to assign you permissions using their administrator account. 
+We will be teaching the entire course with RStudio, you will need to have R (version ≥ 4.3.0) and RStudio (version ≥ 2021.09) installed on your own machine to participate. If you are running outdated versions of either of these software, please ensure you update your software.
 
-3. Install packages needed for course. If you have any issues please let your TA know immediately. 
+1. Launch RStudio. 
+2. Install packages needed for course. If you have any issues please let your TA know immediately. 
     ```shell
-    packages_to_install <- c("sf", "terra", "tmap", "geodata")
+    #list of necessary packages 
+    necPkgs <- c('sf','terra','tmap','geodata')
     
-    for ( package in packages_to_install ) {
-        if (!require(package, character.only=T, quietly=T, warn.conflicts=F)) {
-            install.packages(package)
+    # list of all packages installed 
+    allPkgsInst <- data.frame(
+      Package = names(utils::installed.packages()[, 3]),
+      Version = unname(utils::installed.packages()[, 3]),
+      Depends = unname(utils::installed.packages()[, 5])
+    )
+
+    # list of necessary packages installed 
+    necPkgsInst <- allPkgsInst[grep(paste0("^", necPkgs, "$", collapse = "|"),
+                                    allPkgsInst["Package"][[1]]), ]
+    
+    # loop to either install or update necessary packages
+    # load packages after install or update check
+    for (pkg in necPkgs) {
+    
+      # if not installed, install
+      if (!pkg %in% necPkgsInst$Package) {
+        message(pkg, " is not installed. Installing now.")
+        utils::install.packages(pkg, 
+                                dependencies = TRUE)
+      }
+      # if installed, update
+      else {
+        if(pkg %in% old.packages()[, 1]) {
+          message(pkg, " is installed, but newer version is available. Updating now.")
         }
+        else {
+          message(pkg, " is installed and up-to-date.")
+        }
+        
+        # ask = false stops prompt for all updates
+        utils::update.packages(oldPkgs = necPkgs, 
+                               ask = FALSE)
+      }
+      
+      # if not loaded, load
+      if (!pkg %in% (.packages())) {
+        library(pkg, character.only = TRUE)
+      }
     }
-    ```
-
-4. While your packages are installing, navigate to the `Terminal` tab in your Console Window
-
-5. If the directories `classes\GEMSX003` were not created before, create directories for this class in the bash terminal using the following four commands  
-    ```shell
-    mkdir classes  
-    cd classes  
-    mkdir GEMSX003  
-    cd GEMSX003
-    ```  
-    If these directories already exist, use the following commands to change to this directory
-    ```shell
-    cd classes
-    cd GEMSX003
-    ```
     
-## Week 2 Lecture: Introduction to spatial data and mapping in R
-1. Navigate to your `GEMSX003` directory using the following commands:
-    ```shell
-    cd classes
-    cd GEMSX003
+    # verify necessary packages loaded successfully
+    (.packages())
     ```
-2. Clone the git repository for this week's lecture  
-    ```shell
-    git clone https://github.com/abjoglekar/GEMS-X003-Geospatial-Analysis-R-Vector.git
-    ```
-3. In your JupyterLab environment, open the `GEMS-X003-Geospatial-Analysis-R-Vector` directory and then open the `x003_Module0_Vector.ipynb` Jupyter Notebook to follow along throughout the class 
+3. Download the data and scripts from Github by clicking on the green `<> Code` button and then the `Download ZIP` option.
+4. Create a sub-directory folder named `~/GEMSX003` in a directory location of your choosing (e.g., Desktop, Documents, Google Drive, etc.).
+5. Extract the contents of the downloaded zipped folder into your working directory folder. For consistency, the course contents should be stored under a sub-directory folder with the name of the Github repo. For example, `~/GEMSX003/GEMS-X003-Geospatial-Analysis-R-Vector-main`. This folder will be referred to as the ***working directory***.
+6. Set your working directory within RStudio. Use the menu to change your working directory under **Session > Set Working Directory > Choose Directory**. Choose the directory you unzipped your downloaded files to above with a name that matches the relevant Github repo. For example, `~/GEMSX003/GEMS-X003-Geospatial-Analysis-R-Vector-main`.
